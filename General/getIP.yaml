@@ -1,0 +1,11 @@
+- name: Get IP Adresses
+  hosts: Shardeum
+  become: true
+  gather_facts: no
+  tasks:
+    - name: Get IP
+      ansible.builtin.shell: |
+        curl https://ipecho.net/plain
+      register: ip
+    - debug:
+            var: ip.stdout

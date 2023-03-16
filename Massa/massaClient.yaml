@@ -1,0 +1,30 @@
+- name: SetUp Massa # edit your PWD
+  hosts: NodesFarm1
+  become: true
+  gather_facts: no
+  vars:
+      massaPass: ""
+  tasks:
+    # - name: Generate Secret Key 
+    #   shell: "/root/massa/massa-client/massa-client --pwd {{ massaPass }} wallet_generate_secret_key"
+    #   args: 
+    #     chdir: "/root/massa/massa-client"
+    - name: Show Address
+      shell: "/root/massa/massa-client/massa-client --pwd {{ massaPass }} wallet_info | grep -E 'AU|Address'"
+      args: 
+        chdir: "/root/massa/massa-client"
+      register: export
+    # - name: Buy Rolls
+    #   shell: "/root/massa/massa-client/massa-client --pwd {{ massaPass }} buy_rolls {{ (export.stdout | split(' '))[1] }} 4 0"
+    #   args: 
+    #     chdir: "/root/massa/massa-client"
+    #   register: output
+    - name: Register Staking Address
+      shell: "/root/massa/massa-client/massa-client --pwd {{ massaPass }} node_start_staking {{ (export.stdout | split(' '))[1] }}"
+      args: 
+        chdir: "/root/massa/massa-client"
+      register: output
+    - debug:
+            var: export.stdout
+    - debug:
+            var: output

@@ -1,0 +1,27 @@
+- name: Install Bundlr #After this script you need to send test tokens and start the validator
+  hosts: NodesFarm1
+  become: true
+  gather_facts: no
+  tasks:
+    - name: Update stuff on the server
+      ansible.builtin.command:
+        cmd: sudo apt update 
+    - name: Install curl on the server
+      ansible.builtin.command:
+        cmd: sudo apt install curl -y 
+    - name: Install Blundr File
+      get_url:
+        url: https://raw.githubusercontent.com/DOUBLE-TOP/guides/main/bundlr/install_bundlr.sh
+        dest: ~/
+    - name: Execute Blundr Instalation
+      ansible.builtin.shell: | 
+        chmod +x install_bundlr.sh 
+        ./install_bundlr.sh
+    - name: Check Logs
+      ansible.builtin.command:
+        cmd: docker-compose -f $HOME/bundlr/validator-rust/docker-compose.yml logs
+    - name: Build Testnet Cli
+      ansible.builtin.shell: |
+        cd bundlr/validator-rust
+        npm i -g @bundlr-network/testnet-cli
+        

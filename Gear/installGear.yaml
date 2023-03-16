@@ -1,0 +1,41 @@
+- name: Install Gear
+  hosts: NodesFarm1
+  become: true
+  gather_facts: no
+  tasks:
+    - name: Install soft
+      ansible.builtin.shell: "sudo apt update && sudo apt install curl -y"
+
+    - name: Install Gear File
+      get_url:
+        url: https://raw.githubusercontent.com/DOUBLE-TOP/guides/main/Gear/intsall_gear.sh
+        dest: ~/
+
+    - name: make Gear Instalation executable 1
+      ansible.builtin.shell: | 
+        chmod +x intsall_gear.sh 
+
+    # - name: Overwrite .profile
+    #   ansible.builtin.shell: |
+    #     echo "if [ "$BASH" ]; then
+    #       if [ -f ~/.bashrc ]; then
+    #       . ~/.bashrc
+    #       fi
+    #       fi
+
+    #       mesg n 2> /dev/null || true
+    #       . "$HOME/.cargo/env"" > ~/.profile
+
+    - name: make Gear Instalation executable 2
+      ansible.builtin.shell: | 
+        echo 'export NODENAME_GEAR='gear{{ inventory_hostname }} >> ~/.profile
+        
+    - name: Execute Instalation
+      ansible.builtin.shell: | 
+        . ~/.profile
+        ./intsall_gear.sh
+      register: output
+    - debug: 
+            var: "{{ inventory_hostname }}"
+    - debug:
+            var: output

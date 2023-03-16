@@ -1,0 +1,17 @@
+- name: View Penumbra Wallet
+  hosts: NodesFarm1
+  become: true
+  gather_facts: no
+  tasks: 
+    # - name: View Wallet
+    #   ansible.builtin.shell: |
+    #     pcli view address 0
+    #   register: address
+    # - debug:
+    #         var: address.stdout
+    - name: View Balance
+      ansible.builtin.shell: |
+        pcli view balance
+      register: balance
+    - debug:
+            var: balance.stdout_lines

@@ -1,0 +1,19 @@
+- name: Check Address Bundlr
+  hosts: NodesFarm1
+  become: true
+  gather_facts: no
+  tasks:
+    - name: Save Address
+      ansible.builtin.shell: |
+        . ~/.profile
+        cd ~/bundlr/validator-rust/ && cargo run --bin wallet-tool show-address --wallet wallet.json | jq ".address" | tr -d '"'
+      register: address
+    - name: Save Balance
+      ansible.builtin.shell: |
+        cd /bundlr/validator-rust/
+        testnet-cli balance {{ address.stdout }}
+      register: balance
+    - debug: 
+            var: address.stdout
+    - debug: 
+            var: balance.stderr

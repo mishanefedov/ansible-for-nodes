@@ -1,0 +1,17 @@
+- name: Delegate Tokens # NOTE: check if validator is still active 
+  hosts: NodesFarm1
+  become: true
+  gather_facts: no
+  tasks: 
+    # - name: Sync network
+    #   ansible.builtin.shell: |
+    #     pcli view sync
+    - name: Delegate
+      ansible.builtin.shell: |
+        pcli tx delegate 900penumbra --to penumbravalid1tgz4c39y22d035e0en5kmq8h7pd4skhzcthrpwfp84xthaku6q9s5ky9hj
+    - name: Check Staked
+      ansible.builtin.shell: |
+        pcli view staked
+      register: staked
+    - debug:
+            var: staked.stdout

@@ -1,0 +1,8 @@
+- name: Add ll
+  hosts: NodesFarm1
+  become: true
+  gather_facts: no
+  tasks:
+    - name: add ll
+      ansible.builtin.shell: |
+        echo "alias ll='ls -la'" >> .profile

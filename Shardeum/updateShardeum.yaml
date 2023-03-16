@@ -1,0 +1,35 @@
+---
+- name: UpdateShardeum
+  hosts: Shardeum
+  become: true
+  gather_facts: no
+  vars:
+      pwd: ""
+  tasks:
+    - name: Clone Updating File
+      get_url:
+        url: https://gitlab.com/shardeum/validator/dashboard/-/raw/main/installer.sh
+        dest: ~/
+    - name: Make Shardeum Update executable 
+      ansible.builtin.shell: | 
+        chmod +x installer.sh
+    - name: Execute Instalation
+      ansible.builtin.shell: | 
+        ./installer.sh <<EOF
+        y
+        y
+        {{ pwd }}
+        
+
+
+
+
+        EOF
+    - name: Healthcheck
+      ansible.builtin.shell: |
+        tmux kill-session -t shardeum_healthcheck
+        tmux new-session -d -s shardeum_healthcheck 'bash <(curl -s https://raw.githubusercontent.com/DOUBLE-TOP/guides/main/shardeum/health.sh)'
+      register: health
+    
+    - debug:
+            var: health

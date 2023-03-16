@@ -1,0 +1,22 @@
+- name: Install Penumbra
+  hosts: NodesFarm1
+  become: true
+  gather_facts: no
+  tasks:
+    # - name: Install and Update soft
+    #   ansible.builtin.shell: | 
+    #     apt update
+    #     apt install curl -y
+    # - name: Clone Installing File
+    #   get_url:
+    #     url: https://raw.githubusercontent.com/DOUBLE-TOP/guides/main/penumbra/install_penumbra.sh
+    #     dest: ~/
+    # - name: Make Penumbra Instalation executable 
+    #   ansible.builtin.shell: | 
+    #     chmod +x install_penumbra.sh
+    # - name: Execute Instalation
+    #   ansible.builtin.shell: | 
+    #     ./install_penumbra.sh
+    # - name: Create Wallet
+    #   ansible.builtin.shell: |
+    #     pcli keys generate

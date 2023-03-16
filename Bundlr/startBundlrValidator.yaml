@@ -1,0 +1,12 @@
+- name: Start Bundlr Validator
+  hosts: NodesFarm1
+  become: true
+  gather_facts: no
+  tasks:
+    - name: start Validator
+      ansible.builtin.shell: |
+        cd /bundlr/validator-rust
+        testnet-cli join RkinCLBlY4L5GZFv8gCFcrygTyd5Xm91CzKlR6qxhKA -w ./bundlr/validator-rust/wallet.json -u "http://$(wget -qO- eth0.me):2109" -s 25000000000000
+      register: status
+    - debug: 
+            var: status

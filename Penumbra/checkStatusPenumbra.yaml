@@ -1,0 +1,11 @@
+- name: View Penumbra Wallet
+  hosts: NodesFarm1
+  become: true
+  gather_facts: no
+  tasks: 
+    - name: Check Status
+      ansible.builtin.shell: |
+        pcli debug info
+      register: address
+    - debug:
+            var: address.stdout_lines

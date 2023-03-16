@@ -1,0 +1,14 @@
+- name: Wallet Update Penumbra
+  hosts: NodesFarm1
+  become: true
+  gather_facts: no
+  tasks:
+    - name: Delete Wallet File
+      ansible.builtin.shell: | 
+        rm -rf /root/.local/share/pcli/custody.json
+    - name: Create New Wallet
+      ansible.builtin.shell: |
+        pcli keys generate
+      register: output
+    - debug:
+            var: output.stdout_lines

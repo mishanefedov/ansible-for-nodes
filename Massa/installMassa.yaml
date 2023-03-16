@@ -1,0 +1,25 @@
+- name: Install Massa
+  hosts: NodesFarm1
+  become: true
+  gather_facts: no
+  vars:
+      massaPass: ""
+  tasks:
+    # - name: Clone Installing File
+    #   get_url:
+    #     url: https://raw.githubusercontent.com/DOUBLE-TOP/guides/main/massa/clear_massa.sh
+    #     dest: ~/
+    # - name: Make Massa Instalation executable 
+    #   ansible.builtin.shell: | 
+    #     chmod +x clear_massa.sh
+    # - name: Execute Instalation
+    #   ansible.builtin.shell: |
+    #     bash ./clear_massa.sh <<EOF
+    #     {{ massaPass }}
+    #     EOF
+    - name: Check Status
+      ansible.builtin.shell: |
+        systemctl status massa
+      register: status 
+    - debug:
+            var: status.stdout_lines

@@ -1,0 +1,10 @@
+- name: TestPlaybook
+  hosts: NodesFarm1
+  become: true
+  gather_facts: no
+  tasks:
+    - name: Test tasks
+      shell: echo testing..
+      register: out
+    - debug: 
+            var: out.stdout

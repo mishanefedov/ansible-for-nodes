@@ -1,0 +1,16 @@
+- name: Check Bundlr Validator
+  hosts: NodesFarm1
+  become: true
+  gather_facts: no
+  tasks:
+    - name: Save Address
+      ansible.builtin.shell: |
+        . ~/.profile
+        cd ~/bundlr/validator-rust/ && cargo run --bin wallet-tool show-address --wallet wallet.json | jq ".address" | tr -d '"'
+      register: address
+    - name: Check Validator Status
+      ansible.builtin.shell:
+        npx @bundlr-network/testnet-cli check RkinCLBlY4L5GZFv8gCFcrygTyd5Xm91CzKlR6qxhKA {{ address.stdout }}
+      register: status
+    - debug: 
+            var: status.stderr
