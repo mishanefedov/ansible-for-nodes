@@ -1,0 +1,20 @@
+- name: Install Subspace #This script assumes you have added subspace_addr for every node in your invertory 
+  hosts: NodesFarm1
+  become: true
+  gather_facts: no
+  tasks:
+    - name: Install Subspace File
+      get_url:
+        url: https://raw.githubusercontent.com/DOUBLE-TOP/guides/main/subspace/install.sh
+        dest: ~/
+    - name: Execute File
+      shell: |
+        chmod +x ./install.sh
+        bash ./install.sh <<EOF
+        aaa{{ inventory_hostname }}
+        {{ subspace_addr }}
+        EOF
+      register: output
+    - debug:
+            var: output.stdout
+        
